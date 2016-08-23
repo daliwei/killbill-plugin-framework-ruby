@@ -520,8 +520,6 @@ module Killbill
         end
 
         def build_am_credit_card(cc_number, attributes, pm=nil)
-          @logger.info(pm.cc_type)
-
           card_attributes = {
               :number => cc_number,
               :brand => Utils.normalized(attributes, :cc_type) || (pm.nil? ? nil : pm.cc_type),
