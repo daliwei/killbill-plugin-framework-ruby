@@ -34,7 +34,7 @@ module Killbill
 
         include org.killbill.billing.entitlement.plugin.api.EntitlementContext
 
-        attr_accessor :user_token, :user_name, :call_origin, :user_type, :reason_code, :comments, :created_date, :updated_date, :tenant_id, :operation_type, :account_id, :destination_account_id, :bundle_id, :external_key, :entitlement_specifiers, :effective_date, :plugin_properties
+        attr_accessor :user_token, :user_name, :call_origin, :user_type, :reason_code, :comments, :created_date, :updated_date, :tenant_id, :operation_type, :account_id, :destination_account_id, :base_entitlement_with_add_ons_specifiers, :billing_action_policy, :plugin_properties
 
         def initialize()
         end
@@ -82,25 +82,17 @@ module Killbill
           # conversion for destination_account_id [type = java.util.UUID]
           @destination_account_id = java.util.UUID.fromString(@destination_account_id.to_s) unless @destination_account_id.nil?
 
-          # conversion for bundle_id [type = java.util.UUID]
-          @bundle_id = java.util.UUID.fromString(@bundle_id.to_s) unless @bundle_id.nil?
-
-          # conversion for external_key [type = java.lang.String]
-          @external_key = @external_key.to_s unless @external_key.nil?
-
-          # conversion for entitlement_specifiers [type = java.util.List]
+          # conversion for base_entitlement_with_add_ons_specifiers [type = java.lang.Iterable]
           tmp = java.util.ArrayList.new
-          (@entitlement_specifiers || []).each do |m|
-            # conversion for m [type = org.killbill.billing.entitlement.api.EntitlementSpecifier]
+          (@base_entitlement_with_add_ons_specifiers || []).each do |m|
+            # conversion for m [type = org.killbill.billing.entitlement.api.BaseEntitlementWithAddOnsSpecifier]
             m = m.to_java unless m.nil?
             tmp.add(m)
           end
-          @entitlement_specifiers = tmp
+          @base_entitlement_with_add_ons_specifiers = tmp
 
-          # conversion for effective_date [type = org.joda.time.LocalDate]
-          if !@effective_date.nil?
-            @effective_date = Java::org.joda.time.LocalDate.parse(@effective_date.to_s)
-          end
+          # conversion for billing_action_policy [type = org.killbill.billing.catalog.api.BillingActionPolicy]
+          @billing_action_policy = Java::org.killbill.billing.catalog.api.BillingActionPolicy.value_of( @billing_action_policy.to_s ) unless @billing_action_policy.nil?
 
           # conversion for plugin_properties [type = java.lang.Iterable]
           tmp = java.util.ArrayList.new
@@ -167,28 +159,19 @@ module Killbill
           @destination_account_id = j_obj.destination_account_id
           @destination_account_id = @destination_account_id.nil? ? nil : @destination_account_id.to_s
 
-          # conversion for bundle_id [type = java.util.UUID]
-          @bundle_id = j_obj.bundle_id
-          @bundle_id = @bundle_id.nil? ? nil : @bundle_id.to_s
-
-          # conversion for external_key [type = java.lang.String]
-          @external_key = j_obj.external_key
-
-          # conversion for entitlement_specifiers [type = java.util.List]
-          @entitlement_specifiers = j_obj.entitlement_specifiers
+          # conversion for base_entitlement_with_add_ons_specifiers [type = java.lang.Iterable]
+          @base_entitlement_with_add_ons_specifiers = j_obj.base_entitlement_with_add_ons_specifiers
           tmp = []
-          (@entitlement_specifiers || []).each do |m|
-            # conversion for m [type = org.killbill.billing.entitlement.api.EntitlementSpecifier]
-            m = Killbill::Plugin::Model::EntitlementSpecifier.new.to_ruby(m) unless m.nil?
+          (@base_entitlement_with_add_ons_specifiers.nil? ? [] : @base_entitlement_with_add_ons_specifiers.iterator).each do |m|
+            # conversion for m [type = org.killbill.billing.entitlement.api.BaseEntitlementWithAddOnsSpecifier]
+            m = Killbill::Plugin::Model::BaseEntitlementWithAddOnsSpecifier.new.to_ruby(m) unless m.nil?
             tmp << m
           end
-          @entitlement_specifiers = tmp
+          @base_entitlement_with_add_ons_specifiers = tmp
 
-          # conversion for effective_date [type = org.joda.time.LocalDate]
-          @effective_date = j_obj.effective_date
-          if !@effective_date.nil?
-            @effective_date = @effective_date.to_s
-          end
+          # conversion for billing_action_policy [type = org.killbill.billing.catalog.api.BillingActionPolicy]
+          @billing_action_policy = j_obj.billing_action_policy
+          @billing_action_policy = @billing_action_policy.to_s.to_sym unless @billing_action_policy.nil?
 
           # conversion for plugin_properties [type = java.lang.Iterable]
           @plugin_properties = j_obj.plugin_properties

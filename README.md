@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/killbill/killbill-plugin-framework-ruby.png)](https://travis-ci.org/killbill/killbill-plugin-framework-ruby)
-[![Code Climate](https://codeclimate.com/github/killbill/killbill-plugin-framework-ruby.png)](https://codeclimate.com/github/killbill/killbill-plugin-framework-ruby)
-
 killbill-plugin-framework-ruby
 ==============================
 
@@ -15,6 +12,15 @@ There are various types of plugins one can write for Killbill:
 * currency plugins, which return currency conversion information
 
 All plugin types can interact with Kill Bill directly via APIs and expose HTTP endpoints.
+
+Kill Bill compatibility
+-----------------------
+
+| Framework version | Kill Bill version |
+| ----------------: | ----------------: |
+| 7.x.y             | 0.16.z            |
+| 8.x.y             | 0.18.z            |
+
 
 How to write a Notification plugin
 ----------------------------------
